@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bitdozer.lib.core", "bitdozer.lib.core\bitdozer.lib.core.csproj", "{097D746D-FAC9-4A9C-8487-EA9D3138C177}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bitdozer.Lib.Core", "Bitdozer.Lib.Core\Bitdozer.Lib.Core.csproj", "{097D746D-FAC9-4A9C-8487-EA9D3138C177}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

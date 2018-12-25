@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace bitdozer.lib.core
+namespace Bitdozer.Lib.Core
 {
     public static partial class StringExtension
     {
