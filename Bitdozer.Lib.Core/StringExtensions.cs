@@ -310,7 +310,7 @@ namespace Bitdozer.Lib.Core
             }
         }
         /// <summary>
-        /// Like Split, returns a string array, but includes each splitter as an element of the array (allows original to be reassembled from the list). 
+        /// Like Split, returns a string array, but includes each splitter as an element of the array (allows original to be reassembled from the list).
         /// </summary>
         /// <param name="s">Input string</param>
         /// <param name="splitters">List of char delimiters</param>
@@ -381,6 +381,10 @@ namespace Bitdozer.Lib.Core
         /// <returns>string[]</returns>
         public static string[] SplitTrim(this string s, bool AllowEmptyItems, bool AllowDuplicates, params char[] splitters)
         {
+            if (s.IsBlankOrNull())
+                return new string[0];
+            if (splitters == null || splitters.Length == 0)
+                return new string[] { s };
             var atemp = s.Split(splitters);
             if (atemp.Length == 0)
                 return atemp;
