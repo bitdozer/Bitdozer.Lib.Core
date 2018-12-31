@@ -139,6 +139,9 @@
     <Compile Include="StringExtensionTest.RightTest.g.cs">
       <DependentUpon>StringExtensionTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="StringExtensionTest.SafeAppendQuerystringParameterTest.g.cs">
+      <DependentUpon>StringExtensionTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="StringExtensionTest.SafeDoubleTest.g.cs">
       <DependentUpon>StringExtensionTest.cs</DependentUpon>
     </Compile>

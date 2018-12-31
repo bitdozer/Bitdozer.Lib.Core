@@ -484,20 +484,19 @@ namespace Bitdozer.Lib.Core
             }
             return s;
         }
-
-        public static string SafeGet(this string[] l, int index)
+        /// <summary>
+        /// Returns a value from the array or default value if index outside the bounds
+        /// </summary>
+        /// <param name="l"></param>
+        /// <param name="index"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        public static string SafeGet(this string[] l, int index, string defaultValue = "")
         {
             if (l != null && index >= 0 && l.Length > index)
                 return l[index];
             else
-                return "";
-        }
-        public static string SafeGet(this string[] l, int index, string DefaultValue)
-        {
-            if (l != null && index >= 0 && l.Length > index)
-                return l[index];
-            else
-                return DefaultValue;
+                return defaultValue;
         }
         /// <summary>
         /// Returns position of first character in string not in the array.  Returns -1 if not found.
@@ -569,6 +568,61 @@ namespace Bitdozer.Lib.Core
             if (s != null && double.TryParse(s, out var i))
                 return i;
             return 0;
+        }
+        public static string SafeAppendQuerystringParameter(this string url, string param, string value)
+        {
+            string preChar = "";
+            string paramString = "";
+            if (!string.IsNullOrEmpty(param))
+            {
+                if (!((url ?? "").EndsWith("?") || (url ?? "").EndsWith("&")))
+                {
+                    if ((url ?? "").Contains("?"))
+                    {
+                        preChar = "&";
+                    }
+                    else
+                    {
+                        preChar = "?";
+                    }
+                }
+                paramString = param + "=" + value.UriEscapeDataString();
+            }
+            return (url ?? "") + preChar + paramString;
+        }
+        public static string SafeAppendQuerystring(string url, string qString)
+        {
+            string prechar = "";
+            if ((qString ?? "").StartsWith("?") || (qString ?? "").StartsWith("&"))
+                qString = qString.Substring(1);
+            if (!string.IsNullOrEmpty(qString))
+            {
+                if (!((url ?? "").EndsWith("?") || (url ?? "").EndsWith("&")))
+                {
+                    if ((url ?? "").Contains("?"))
+                        prechar = "&";
+                    else
+                        prechar = "?";
+                }
+            }
+            return (url ?? "") + prechar + (qString ?? "");
+        }
+        public static string SafeAppendFilePath(string path, params string[] next)
+        {
+            return SafeAppend('\\', path, next);
+        }
+        public static string SafeAppendUrlPath(string path, params string[] next)
+        {
+            return SafeAppend('/', path, next);
+        }
+        public static string SafeAppend(char separator, string root, params string[] items)
+        {
+            string tempPath = root ?? "";
+            if (items == null || items.Length < 1)
+                return tempPath;
+            foreach (var item in items)
+                tempPath = (tempPath.TrimEnd(separator) + separator + (item ?? "").TrimStart(separator));
+            return tempPath;
         }
     }
 
