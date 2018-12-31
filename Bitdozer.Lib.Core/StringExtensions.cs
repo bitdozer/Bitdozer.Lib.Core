@@ -7,18 +7,25 @@ namespace Bitdozer.Lib.Core
 {
     public static partial class StringExtension
     {
+        /// <summary>
+        /// Applies Uri.EscapeDataString to the string
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static string UriEscapeDataString(this String str)
         {
             if (string.IsNullOrEmpty(str))
                 return str;
             return Uri.EscapeDataString(str);
         }
+        /// <summary>
+        /// Returns same value as string ?? ""
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static string BlankIfNull(this String str)
         {
-            if (str == null)
-                return "";
-            else
-                return str;
+            return str ?? "";
         }
         /// <summary>
         /// Returns the DefaultValue if the string is null or zero-length
@@ -33,7 +40,15 @@ namespace Bitdozer.Lib.Core
             else
                 return str;
         }
-        public static string LimitLength(this String s, int length, int shortenBy, string append)
+        /// <summary>
+        /// Shortens the string to length, and if shortening further shortens and appends an indicator
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="length">The length to test against-string.Length &lt; length will not be altered</param>
+        /// <param name="shortenBy">If string exceeds length, shorten to length-shortenBy</param>
+        /// <param name="append">If string exceeds length, append this string, e.g. "..."</param>
+        /// <returns></returns>
+        public static string LimitLength(this String s, int length, int shortenBy = 3, string append = "...")
         {
             if (string.IsNullOrEmpty(s))
                 return "";
@@ -50,18 +65,12 @@ namespace Bitdozer.Lib.Core
             else
                 return s;
         }
-        public static string LimitLength(this String s, int length, int shortenBy)
-        {
-            if (string.IsNullOrEmpty(s))
-                return "";
-            return LimitLength(s, length, shortenBy, "...");
-        }
-        public static string LimitLength(this String s, int length)
-        {
-            if (string.IsNullOrEmpty(s))
-                return "";
-            return LimitLength(s, length, 3);
-        }
+        /// <summary>
+        /// Returns the left len characters of a string
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="len"></param>
+        /// <returns></returns>
         public static string Left(this string s, int len)
         {
             if (string.IsNullOrEmpty(s))
@@ -73,83 +82,119 @@ namespace Bitdozer.Lib.Core
             else
                 return s.Substring(0, len);
         }
-        public static string LeftOf(this string s, string search)
+
+        /// <summary>
+        /// Returns the string left of the first occurence of search.  If search is not found, empty string is returned.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="search">The string to search for</param>
+        /// <param name="comparison">The comparision type to perform.  Default: Ordinal</param>
+        /// <returns></returns>
+        public static string LeftOf(this string s, string search, StringComparison comparison = StringComparison.Ordinal)
         {
             if (string.IsNullOrEmpty(s))
                 return "";
             if (search == null)
                 return s;
-            if (s.Length == 0 || !s.Contains(search))
+            if (s.Length == 0 || s.IndexOf(search, comparison) < 0)
                 return "";
             else
-                return s.Substring(0, s.IndexOf(search));
+                return s.Substring(0, s.IndexOf(search, comparison));
         }
-        public static string LeftOf(this string s, string search, bool ReturnWholeStringIfNotFound)
+
+        /// <summary>
+        /// Returns the string left of the first occurence of search with explicit control over not found handling
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="search"></param>
+        /// <param name="returnWholeStringIfNotFound"></param>
+        /// <param name="comparison">The comparision type to perform.  Default: Ordinal</param>
+        /// <returns></returns>
+        public static string LeftOf(this string s, string search, bool returnWholeStringIfNotFound, StringComparison comparison = StringComparison.Ordinal)
         {
             if (string.IsNullOrEmpty(s))
                 return "";
             if (search == null)
                 return s;
-            if (s.Length == 0 || !(s.Contains(search) || ReturnWholeStringIfNotFound))
+            if (s.Length == 0 || !(s.IndexOf(search, comparison) > -1 || returnWholeStringIfNotFound))
                 return "";
             else
-                return s.Substring(0, (s + search).IndexOf(search));
+                return s.Substring(0, (s + search).IndexOf(search, comparison));
         }
-        public static string LeftOfLast(this string s, string search, bool returnWholeStringIfNotFound = false)
+        /// <summary>
+        /// Returns the string left of the last occurence of search with explicit control over not found handling
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="search"></param>
+        /// <param name="returnWholeStringIfNotFound"></param>
+        /// <param name="comparison">The comparision type to perform.  Default: Ordinal</param>
+        /// <returns></returns>
+        public static string LeftOfLast(this string s, string search, bool returnWholeStringIfNotFound = false, StringComparison comparison = StringComparison.Ordinal)
         {
             if (string.IsNullOrEmpty(s))
                 return "";
-            if (string.IsNullOrEmpty(search) || !s.Contains(search))
+            if (string.IsNullOrEmpty(search) || s.IndexOf(search, comparison) < 0)
                 return returnWholeStringIfNotFound ? s : "";
-            return s.Substring(0, s.LastIndexOf(search));
+            return s.Substring(0, s.LastIndexOf(search, comparison));
         }
-        public static string RightOf(this string s, string search, bool ReturnWholeStringIfNotFound)
+        /// <summary>
+        /// Returns the string right of the last occurence of search with explicit control over not found handling
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="search"></param>
+        /// <param name="returnWholeStringIfNotFound"></param>
+        /// <param name="comparison">The comparision type to perform.  Default: Ordinal</param>
+        /// <returns></returns>
+        public static string RightOf(this string s, string search, bool returnWholeStringIfNotFound, StringComparison comparison = StringComparison.Ordinal)
         {
             if (string.IsNullOrEmpty(s))
                 return "";
             if (string.IsNullOrEmpty(search))
                 return s;
-            if (!(s.Contains(search) || ReturnWholeStringIfNotFound))
+            if (!(s.IndexOf(search, comparison) > -1 || returnWholeStringIfNotFound))
                 return "";
             else
             {
                 string t = search + s;
-                return t.Substring(t.LastIndexOf(search) + search.Length);
+                return t.Substring(t.LastIndexOf(search, comparison) + search.Length);
             }
         }
-        public static string RightOf(this string s, string search)
+        /// <summary>
+        /// Returns the string right of the last occurence of search
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="search"></param>
+        /// <param name="comparison"></param>
+        /// <returns></returns>
+        public static string RightOf(this string s, string search, StringComparison comparison = StringComparison.Ordinal)
         {
             if (string.IsNullOrEmpty(s))
                 return "";
             if (string.IsNullOrEmpty(search))
                 return s;
-            if (s.Length == 0 || !s.Contains(search))
+            if (s.Length == 0 || s.IndexOf(search, comparison) < 0)
                 return "";
             else
-                return s.Substring(s.LastIndexOf(search) + search.Length);
+                return s.Substring(s.LastIndexOf(search, comparison) + search.Length);
         }
-        public static string RightOfFirst(this string s, string search)
-        {
-            if (string.IsNullOrEmpty(s))
-                return "";
-            if (string.IsNullOrEmpty(search))
-                return s;
-            if (s.Length == 0 || !s.Contains(search))
-                return "";
-            else
-                return s.Substring(s.IndexOf(search) + search.Length);
-        }
-        public static string RightOfFirst(this string s, string search, StringComparison comparer)
+        /// <summary>
+        /// Returns the string right of the first occurence of search with explicit control over not found handling
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="search"></param>
+        /// <param name="comparison">The comparision type to perform.  Default: Ordinal</param>
+        /// <returns></returns>
+        public static string RightOfFirst(this string s, string search, StringComparison comparison = StringComparison.Ordinal)
         {
             if (string.IsNullOrEmpty(s))
                 return "";
             if (string.IsNullOrEmpty(search))
                 return s;
 
-            if (s.Length == 0 || (s.IndexOf(search, comparer) < 0))
+            if (s.Length == 0 || (s.IndexOf(search, comparison) < 0))
                 return "";
             else
-                return s.Substring(s.IndexOf(search, comparer) + search.Length);
+                return s.Substring(s.IndexOf(search, comparison) + search.Length);
         }
         /// <summary>
         /// Replace with control over culture and case handling.
@@ -157,37 +202,58 @@ namespace Bitdozer.Lib.Core
         /// <param name="s"></param>
         /// <param name="search">String to find</param>
         /// <param name="replace">Replacement string</param>
-        /// <param name="comparer">StringComparison enumerable type</param>
+        /// <param name="comparison">StringComparison enumerable type</param>
         /// <returns></returns>
-        public static string Replace(this string s, string search, string replace, StringComparison comparer)
+        public static string Replace(this string s, string search, string replace, StringComparison comparison)
         {
-            if (string.IsNullOrEmpty(s) || string.IsNullOrEmpty(search) || (s.IndexOf(search, comparer) < 0))
+            if (string.IsNullOrEmpty(s) || string.IsNullOrEmpty(search) || (s.IndexOf(search, comparison) < 0))
                 return s;
             else
             {
                 string s2 = s;
                 int index = 0;
-                while (index < s2.Length && s2.IndexOf(search, index, comparer) >= 0)
+                while (index < s2.Length && s2.IndexOf(search, index, comparison) >= 0)
                 {
-                    int foundat = s2.IndexOf(search, index, comparer);
+                    int foundat = s2.IndexOf(search, index, comparison);
                     s2 = s2.Left(foundat) + (replace ?? "") + s2.Substring(foundat + search.Length);
                     index = foundat + (replace == null ? 0 : replace.Length);
                 }
                 return s2;
             }
         }
-        public static string LeftOf(this string s, char c)
+        /// <summary>
+        /// Returns the string left of the first occurence of a char with explicit control over not found handling
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="c">Character to search for</param>
+        /// <param name="returnWholeStringIfNotFound"></param>
+        /// <param name="comparison"></param>
+        /// <returns></returns>
+        public static string LeftOf(this string s, char c, bool returnWholeStringIfNotFound = false, StringComparison comparison = StringComparison.Ordinal)
         {
             if (string.IsNullOrEmpty(s))
                 return "";
-            return LeftOf(s, c.ToString());
+            return LeftOf(s, c.ToString(), returnWholeStringIfNotFound, comparison);
         }
-        public static string RightOf(this string s, char c)
+        /// <summary>
+        /// Returns the string right of the last occurence of a char with explicit control over not found handling
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="c">Character to search for</param>
+        /// <param name="returnWholeStringIfNotFound"></param>
+        /// <param name="comparison"></param>
+        public static string RightOf(this string s, char c, bool returnWholeStringIfNotFound = false, StringComparison comparison = StringComparison.Ordinal)
         {
             if (string.IsNullOrEmpty(s))
                 return "";
-            return RightOf(s, c.ToString());
+            return RightOf(s, c.ToString(), returnWholeStringIfNotFound, comparison);
         }
+        /// <summary>
+        /// Returns the right len characters of a string
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="len"></param>
+        /// <returns></returns>
         public static string Right(this string s, int len)
         {
             if (string.IsNullOrEmpty(s))
@@ -199,6 +265,12 @@ namespace Bitdozer.Lib.Core
             else
                 return s.Substring(s.Length - len);
         }
+        /// <summary>
+        /// Attempts to pluralize a string using standard rules if pluralize is true
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="pluralize">Test to determine if pluralizing</param>
+        /// <returns></returns>
         public static string Pluralize(this string s, bool pluralize)
         {
             if (string.IsNullOrEmpty(s))
@@ -219,20 +291,42 @@ namespace Bitdozer.Lib.Core
             else
                 return s;
         }
+        /// <summary>
+        /// Attempts to pluralize a string
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         public static string Pluralize(this string s)
         {
             if (string.IsNullOrEmpty(s))
                 return "";
             return Pluralize(s, true);
         }
-        public static bool IsBlankOrNull(this string s, bool TreatWhiteSpaceAsBlank)
+        /// <summary>
+        /// Returns true if string is null or empty, or made up entirely of whitespace if specified
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="treatWhiteSpaceAsBlank"></param>
+        /// <returns></returns>
+        public static bool IsBlankOrNull(this string s, bool treatWhiteSpaceAsBlank)
         {
-            return (string.IsNullOrEmpty(s) || (TreatWhiteSpaceAsBlank && s.Trim().Length == 0));
+            return (string.IsNullOrEmpty(s) || (treatWhiteSpaceAsBlank && s.Trim().Length == 0));
         }
+        /// <summary>
+        /// Inline version of string.IsNullOrEmpty
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         public static bool IsBlankOrNull(this string s)
         {
             return string.IsNullOrEmpty(s);
         }
+        /// <summary>
+        /// Converts a string to null if it is null, empty, or made entirely of whitespace (if specified)
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="TreatWhiteSpaceAsBlank"></param>
+        /// <returns></returns>
         public static string NullIfBlank(this string s, bool TreatWhiteSpaceAsBlank)
         {
             if (string.IsNullOrEmpty(s) || (TreatWhiteSpaceAsBlank && s.Trim().Length == 0))
@@ -240,6 +334,11 @@ namespace Bitdozer.Lib.Core
             else
                 return s;
         }
+        /// <summary>
+        /// Returns null if string.IsNullOrEmpty
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         public static string NullIfBlank(this string s)
         {
             if (string.IsNullOrEmpty(s))
@@ -247,6 +346,11 @@ namespace Bitdozer.Lib.Core
             else
                 return s;
         }
+        /// <summary>
+        /// Removes any characters that do not match char.IsLetterOrDigit
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         public static string StripNonAlphaNumeric(this string s)
         {
             if (string.IsNullOrEmpty(s))
@@ -257,7 +361,13 @@ namespace Bitdozer.Lib.Core
                     sb.Append(s[i]);
             return sb.ToString();
         }
-        public static string StripChars(this string s, char[] chars)
+        /// <summary>
+        /// Removes any characters from the string that exist in chars
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="chars"></param>
+        /// <returns></returns>
+        public static string StripChars(this string s, params char[] chars)
         {
             if (string.IsNullOrEmpty(s))
                 return "";
@@ -287,15 +397,26 @@ namespace Bitdozer.Lib.Core
             }
             return sb.ToString();
         }
-        public static long ContainsCount(this string s, char FindChar)
+        /// <summary>
+        /// Returns a case-sensitive cound of occurences of findChar in the string
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="findChar"></param>
+        /// <returns></returns>
+        public static long ContainsCount(this string s, char findChar)
         {
             if (string.IsNullOrEmpty(s))
                 return 0;
             long count = 0;
             foreach (char c in s)
-                if (c == FindChar) count++;
+                if (c == findChar) count++;
             return count;
         }
+        /// <summary>
+        /// Capitalizes the first character of a string and lowe cases the rest.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         public static string ToSentence(this string s)
         {
             if (string.IsNullOrEmpty(s))
@@ -321,12 +442,12 @@ namespace Bitdozer.Lib.Core
             if (string.IsNullOrEmpty(s) || splitters == null || splitters.Length == 0)
                 return new string[] { s };
 
-            System.Collections.Generic.List<string> outlist = new List<string>();
+            var outList = new List<string>();
             while (s.Length > 0)
             {
                 if (splitters.Contains(s[0]))
                 {
-                    outlist.Add(s[0].ToString());
+                    outList.Add(s[0].ToString());
                     if (s.Length > 1)
                         s = s.Substring(1);
                     else
@@ -339,17 +460,17 @@ namespace Bitdozer.Lib.Core
                         i++;
                     if (s.Length > i + 1)
                     {
-                        outlist.Add(s.Left(i));
+                        outList.Add(s.Left(i));
                         s = s.Substring(i);
                     }
                     else
                     {
-                        outlist.Add(s);
+                        outList.Add(s);
                         s = "";
                     }
                 }
             }
-            return outlist.ToArray();
+            return outList.ToArray();
         }
         /// <summary>
         /// Splits a string list, trims the elements of whitespace and omits blank and duplicate items
@@ -397,7 +518,13 @@ namespace Bitdozer.Lib.Core
             }
             return templist.ToArray();
         }
-        public static string ToTitle(this string s, bool ForceLowerCase)
+        /// <summary>
+        /// Attempts to convert a string to title case leaving common connector words as lower case
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="forceLowerCase">If false only alters case on first letter, if true forcess rest of word to lower case</param>
+        /// <returns></returns>
+        public static string ToTitle(this string s, bool forceLowerCase = true)
         {
             if (string.IsNullOrEmpty(s))
                 return string.Empty;
@@ -409,7 +536,7 @@ namespace Bitdozer.Lib.Core
                 if (word.Length > 0)
                 {
                     if (!ignore.Contains(word.ToLower()))
-                        sb.Append(word[0].ToString().ToUpper() + (ForceLowerCase ? word.Substring(1).ToLower() : word.Substring(1)));
+                        sb.Append(word[0].ToString().ToUpper() + (forceLowerCase ? word.Substring(1).ToLower() : word.Substring(1)));
                     else
                         sb.Append(word.ToLower());
                 }
@@ -417,39 +544,44 @@ namespace Bitdozer.Lib.Core
             return sb.ToString();
         }
 
-        public static string ToTitle(this string s)
-        {
-            if (string.IsNullOrEmpty(s))
-                return string.Empty;
-            return s.ToTitle(true);
-        }
         // adapted from: http://blog.binaryocean.com/2008/02/24/TextBoxMaxLengthFromLINQMetaData.aspx
         /// <summary>
-        /// Returns text between first StartText and EndText in s
+        /// Returns text between first StartText and EndText in s, ignoring case
         /// </summary>
         /// <param name="s">String being searched</param>
-        /// <param name="StartText">Start delimiter</param>
-        /// <param name="EndText">End delimiter</param>
+        /// <param name="startText">Start delimiter</param>
+        /// <param name="endText">End delimiter</param>
+        /// <param name="comparison">Comparison to use, default to ignore case</param>
         /// <returns></returns>
-        public static string BetweenFirst(this string s, string StartText, string EndText)
+        public static string BetweenFirst(this string s, string startText, string endText, StringComparison comparison = StringComparison.OrdinalIgnoreCase)
         {
             if (string.IsNullOrEmpty(s))
                 return string.Empty;
-            int start = s.IndexOf(StartText ?? "", StringComparison.OrdinalIgnoreCase) + (StartText ?? "").Length;
+            int start = s.IndexOf(startText ?? "",comparison) + (startText ?? "").Length;
             if (start < 0 || start >= s.Length)
                 return String.Empty;
-            int end = s.IndexOf(EndText ?? "", start, StringComparison.OrdinalIgnoreCase);
+            int end = s.IndexOf(endText ?? "", start, comparison);
             if (end < 1 || end > s.Length)
                 return string.Empty;
             return s.Substring(start, end - start);
         }
+        /// <summary>
+        /// Returns the result of double.TryParse on the string
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         public static bool IsNumeric(this string s)
         {
             if (string.IsNullOrEmpty(s))
                 return false;
-            double d;
-            return double.TryParse(s, out d);
+            return double.TryParse(s, out var d);
         }
+        /// <summary>
+        /// Converts a string array to a string with the given separator
+        /// </summary>
+        /// <param name="l"></param>
+        /// <param name="separator"></param>
+        /// <returns></returns>
         public static string ToString(this string[] l, string separator)
         {
             string s = "";
@@ -547,28 +679,51 @@ namespace Bitdozer.Lib.Core
         {
             if (string.IsNullOrEmpty(s))
                 return string.Empty;
+            s = s.Replace("\r\n", "\n");
             s = s.Replace("\r", "");
             s = s.Replace("\n", LineEnding);
             return s;
         }
+        /// <summary>
+        /// Returns the result of int.TryParse or 0 if that fails
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         public static int SafeInt(this string s)
         {
             if (s != null && int.TryParse(s, out var i))
                 return i;
             return 0;
         }
+        /// <summary>
+        /// Returns the result of long.TryParse or 0 if that fails
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         public static long SafeLong(this string s)
         {
             if (s != null && long.TryParse(s, out var i))
                 return i;
             return 0;
         }
+        /// <summary>
+        /// Returns the result of double.TryParse or 0.0 if that fails.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         public static double SafeDouble(this string s)
         {
             if (s != null && double.TryParse(s, out var i))
                 return i;
-            return 0;
+            return 0.0;
         }
+        /// <summary>
+        /// Attempts to append a querystring parameter and value by looking for existing ? and & in the url.  Does not take into account # anchors
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="param"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static string SafeAppendQuerystringParameter(this string url, string param, string value)
         {
             string preChar = "";
