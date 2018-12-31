@@ -770,6 +770,31 @@ namespace Bitdozer.Lib.Core
                 tempPath = (tempPath.TrimEnd(separator) + separator + (item ?? "").TrimStart(separator));
             return tempPath;
         }
+        /// <summary>
+        /// Performs a Contains test with control over the StringComparison used
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="stringToFind"></param>
+        /// <param name="comparison"></param>
+        /// <returns></returns>
+        public static bool Contains(this string source, string stringToFind, StringComparison comparison)
+        {
+            return source != null && stringToFind != null && source.IndexOf(stringToFind, comparison) > -1;
+        }
+        /// <summary>
+        /// Same as StringBuilder.AppendFormat + StringBuilder.AppendLine
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="format">A composite format string</param>
+        /// <param name="args">An array of objects to format</param>
+        /// <returns>A reference to this instance with format and the default line terminator appended. Each format item in format is replaced by the string representation of the corresponding object argument.</returns>
+        public static StringBuilder AppendFormatLine(this StringBuilder sb, string format, params object[] args)
+        {
+            if (!string.IsNullOrEmpty(format) && args != null)
+                sb?.AppendFormat(format, args);
+            sb?.AppendLine();
+            return sb;
+        }
     }
 
 }
