@@ -5,7 +5,7 @@ using Bitdozer.Lib.Core;
 namespace Bitdozer.Lib.Core.Tests
 {
     [TestClass]
-    public class StringExtensionTest
+    public class StringExtensionManualTests
     {
         [TestMethod]
         public void BetweenFirstTest()
@@ -35,6 +35,9 @@ namespace Bitdozer.Lib.Core.Tests
             Assert.AreEqual<string>("google.com?test=test&test2=test2", s);
             s = "google.com?test=test".SafeAppendQuerystring("test2=test2");
             Assert.AreEqual<string>("google.com?test=test&test2=test2", s);
+            s = "google.com?test=test".SafeAppendQuerystring("&test2=test2");
+            Assert.AreEqual<string>("google.com?test=test&test2=test2", s);
         }
+
     }
 }

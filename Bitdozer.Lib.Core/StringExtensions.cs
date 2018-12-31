@@ -509,12 +509,11 @@ namespace Bitdozer.Lib.Core
             if (splitters == null || splitters.Length == 0)
                 return new[] { s };
             var atemp = s.Split(splitters);
-            if (atemp.Length == 0)
-                return atemp;
+
             List<string> templist = new List<string>();
             foreach (var item in atemp)
             {
-                s = (item ?? "").Trim();
+                s = item.Trim();
                 if ((s.Length > 0 || allowEmptyItems) && (allowDuplicates || !templist.Contains(item)))
                     templist.Add(s);
             }
@@ -741,8 +740,10 @@ namespace Bitdozer.Lib.Core
         public static string SafeAppendQuerystring(this string url, string qString)
         {
             string prechar = "";
-            if ((qString ?? "").StartsWith("?") || (qString ?? "").StartsWith("&"))
-                qString = qString?.Substring(1);
+            if (string.IsNullOrEmpty(qString))
+                return url ?? "";
+            if (qString.StartsWith("?") || qString.StartsWith("&"))
+                qString = qString.Substring(1);
             if (!string.IsNullOrEmpty(qString))
             {
                 if (!((url ?? "").EndsWith("?") || (url ?? "").EndsWith("&")))
