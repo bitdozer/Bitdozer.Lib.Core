@@ -96,7 +96,7 @@ namespace Bitdozer.Lib.Core
                 return "";
             if (search == null)
                 return s;
-            if (s.Length == 0 || s.IndexOf(search, comparison) < 0)
+            if (s.IndexOf(search, comparison) < 0)
                 return "";
             else
                 return s.Substring(0, s.IndexOf(search, comparison));
@@ -116,7 +116,7 @@ namespace Bitdozer.Lib.Core
                 return "";
             if (search == null)
                 return s;
-            if (s.Length == 0 || !(s.IndexOf(search, comparison) > -1 || returnWholeStringIfNotFound))
+            if (!(s.IndexOf(search, comparison) > -1 || returnWholeStringIfNotFound))
                 return "";
             else
                 return s.Substring(0, (s + search).IndexOf(search, comparison));
@@ -172,7 +172,7 @@ namespace Bitdozer.Lib.Core
                 return "";
             if (string.IsNullOrEmpty(search))
                 return s;
-            if (s.Length == 0 || s.IndexOf(search, comparison) < 0)
+            if (s.IndexOf(search, comparison) < 0)
                 return "";
             else
                 return s.Substring(s.LastIndexOf(search, comparison) + search.Length);
@@ -190,8 +190,7 @@ namespace Bitdozer.Lib.Core
                 return "";
             if (string.IsNullOrEmpty(search))
                 return s;
-
-            if (s.Length == 0 || (s.IndexOf(search, comparison) < 0))
+            if (s.IndexOf(search, comparison) < 0)
                 return "";
             else
                 return s.Substring(s.IndexOf(search, comparison) + search.Length);
@@ -216,7 +215,7 @@ namespace Bitdozer.Lib.Core
                 {
                     int foundat = s2.IndexOf(search, index, comparison);
                     s2 = s2.Left(foundat) + (replace ?? "") + s2.Substring(foundat + search.Length);
-                    index = foundat + (replace == null ? 0 : replace.Length);
+                    index = foundat + (replace?.Length ?? 0);
                 }
                 return s2;
             }
@@ -356,9 +355,10 @@ namespace Bitdozer.Lib.Core
             if (string.IsNullOrEmpty(s))
                 return "";
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < s.Length; i++)
-                if (char.IsLetterOrDigit(s[i]))
-                    sb.Append(s[i]);
+            foreach (var t in s)
+                if (char.IsLetterOrDigit(t))
+                    sb.Append(t);
+
             return sb.ToString();
         }
         /// <summary>
@@ -374,9 +374,10 @@ namespace Bitdozer.Lib.Core
             if (chars == null || chars.Length == 0)
                 return s;
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < s.Length; i++)
-                if (!chars.Contains(s[i]))
-                    sb.Append(s[i]);
+            foreach (var t in s)
+                if (!chars.Contains(t))
+                    sb.Append(t);
+
             return sb.ToString();
         }
         /// <summary>
@@ -440,7 +441,7 @@ namespace Bitdozer.Lib.Core
         {
             //string[] outarray = null;
             if (string.IsNullOrEmpty(s) || splitters == null || splitters.Length == 0)
-                return new string[] { s };
+                return new[] { s };
 
             var outList = new List<string>();
             while (s.Length > 0)
@@ -448,10 +449,7 @@ namespace Bitdozer.Lib.Core
                 if (splitters.Contains(s[0]))
                 {
                     outList.Add(s[0].ToString());
-                    if (s.Length > 1)
-                        s = s.Substring(1);
-                    else
-                        s = "";
+                    s = s.Length > 1 ? s.Substring(1) : "";
                 }
                 else
                 {
@@ -472,9 +470,11 @@ namespace Bitdozer.Lib.Core
             }
             return outList.ToArray();
         }
+
         /// <summary>
         /// Splits a string list, trims the elements of whitespace and omits blank and duplicate items
         /// </summary>
+        /// <param name="s"></param>
         /// <param name="splitters">char[] of splitters</param>
         /// <returns>string[]</returns>
         public static string[] SplitTrim(this string s, params char[] splitters)
@@ -482,7 +482,7 @@ namespace Bitdozer.Lib.Core
             if (s.IsBlankOrNull())
                 return new string[0];
             if (splitters == null || splitters.Length == 0)
-                return new string[] { s };
+                return new[] { s };
             var atemp = s.Split(splitters);
             List<string> templist = new List<string>();
             foreach (var item in atemp)
@@ -493,19 +493,21 @@ namespace Bitdozer.Lib.Core
             }
             return templist.ToArray();
         }
+
         /// <summary>
         /// Splits a string list, trims the elements of whitespace and optionally retains blank and/or duplicate items
         /// </summary>
-        /// <param name="AllowEmptyItems">If true, empty values are retained</param>
-        /// <param name="AllowDuplicates">If true, duplicate values are retained</param>
+        /// <param name="s"></param>
+        /// <param name="allowEmptyItems">If true, empty values are retained</param>
+        /// <param name="allowDuplicates">If true, duplicate values are retained</param>
         /// <param name="splitters">char[] of splitters</param>
         /// <returns>string[]</returns>
-        public static string[] SplitTrim(this string s, bool AllowEmptyItems, bool AllowDuplicates, params char[] splitters)
+        public static string[] SplitTrim(this string s, bool allowEmptyItems, bool allowDuplicates, params char[] splitters)
         {
             if (s.IsBlankOrNull())
                 return new string[0];
             if (splitters == null || splitters.Length == 0)
-                return new string[] { s };
+                return new[] { s };
             var atemp = s.Split(splitters);
             if (atemp.Length == 0)
                 return atemp;
@@ -513,7 +515,7 @@ namespace Bitdozer.Lib.Core
             foreach (var item in atemp)
             {
                 s = (item ?? "").Trim();
-                if ((s.Length > 0 || AllowEmptyItems) && (AllowDuplicates || !templist.Contains(item)))
+                if ((s.Length > 0 || allowEmptyItems) && (allowDuplicates || !templist.Contains(item)))
                     templist.Add(s);
             }
             return templist.ToArray();
@@ -555,13 +557,12 @@ namespace Bitdozer.Lib.Core
         /// <returns></returns>
         public static string BetweenFirst(this string s, string startText, string endText, StringComparison comparison = StringComparison.OrdinalIgnoreCase)
         {
-            if (string.IsNullOrEmpty(s))
+            if (string.IsNullOrEmpty(s) || string.IsNullOrEmpty(startText) || string.IsNullOrEmpty(endText) ||
+                s.IndexOf(startText, comparison) < 0)
                 return string.Empty;
-            int start = s.IndexOf(startText ?? "",comparison) + (startText ?? "").Length;
-            if (start < 0 || start >= s.Length)
-                return String.Empty;
-            int end = s.IndexOf(endText ?? "", start, comparison);
-            if (end < 1 || end > s.Length)
+            int start = s.IndexOf(startText, comparison) + startText.Length;
+            int end = s.IndexOf(endText, start, comparison);
+            if (end < 1)
                 return string.Empty;
             return s.Substring(start, end - start);
         }
@@ -574,7 +575,7 @@ namespace Bitdozer.Lib.Core
         {
             if (string.IsNullOrEmpty(s))
                 return false;
-            return double.TryParse(s, out var d);
+            return double.TryParse(s, out _);
         }
         /// <summary>
         /// Converts a string array to a string with the given separator
@@ -655,22 +656,21 @@ namespace Bitdozer.Lib.Core
             StringBuilder sb = new StringBuilder();
             bool inside = false;
 
-            for (int i = 0; i < s.Length; i++)
+            foreach (var @let in s)
             {
-                char let = s[i];
-                if (let == '<')
+                if (@let == '<')
                 {
                     inside = true;
                     continue;
                 }
-                if (let == '>')
+                if (@let == '>')
                 {
                     inside = false;
                     continue;
                 }
                 if (!inside)
                 {
-                    sb.Append(let);
+                    sb.Append(@let);
                 }
             }
             return sb.ToString();
@@ -732,32 +732,22 @@ namespace Bitdozer.Lib.Core
             {
                 if (!((url ?? "").EndsWith("?") || (url ?? "").EndsWith("&")))
                 {
-                    if ((url ?? "").Contains("?"))
-                    {
-                        preChar = "&";
-                    }
-                    else
-                    {
-                        preChar = "?";
-                    }
+                    preChar = (url ?? "").Contains("?") ? "&" : "?";
                 }
                 paramString = param + "=" + value.UriEscapeDataString();
             }
             return (url ?? "") + preChar + paramString;
         }
-        public static string SafeAppendQuerystring(string url, string qString)
+        public static string SafeAppendQuerystring(this string url, string qString)
         {
             string prechar = "";
             if ((qString ?? "").StartsWith("?") || (qString ?? "").StartsWith("&"))
-                qString = qString.Substring(1);
+                qString = qString?.Substring(1);
             if (!string.IsNullOrEmpty(qString))
             {
                 if (!((url ?? "").EndsWith("?") || (url ?? "").EndsWith("&")))
                 {
-                    if ((url ?? "").Contains("?"))
-                        prechar = "&";
-                    else
-                        prechar = "?";
+                    prechar = (url ?? "").Contains("?") ? "&" : "?";
                 }
             }
             return (url ?? "") + prechar + (qString ?? "");
