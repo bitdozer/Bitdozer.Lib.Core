@@ -36,4 +36,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: InternalsVisibleTo("Bitdozer.Lib.Core.Framework.Tests")]
 [assembly: InternalsVisibleTo("Bitdozer.Lib.Core.Framework.Explorables")]
+[assembly: InternalsVisibleTo("Bitdozer.Lib.Core.Framework.Tests1")]
+[assembly: InternalsVisibleTo("Bitdozer.Lib.Core.Framework.Tests2")]
 
