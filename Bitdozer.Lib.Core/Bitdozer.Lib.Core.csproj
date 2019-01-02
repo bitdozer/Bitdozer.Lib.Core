@@ -9,8 +9,10 @@
     <PackageProjectUrl>https://github.com/bitdozer/Bitdozer.Lib.Core</PackageProjectUrl>
     <RepositoryUrl>https://github.com/bitdozer/Bitdozer.Lib.Core</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageLicenseUrl>https://choosealicense.com/licenses/agpl-3.0/</PackageLicenseUrl>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <Description>String extensions and other useful methods</Description>
-  </PropertyGroup>
-
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="..\LICENSE.txt" Pack="true" PackagePath=""/>
+    </ItemGroup>
 </Project>
