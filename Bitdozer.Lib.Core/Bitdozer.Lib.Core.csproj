@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Richard M. Diamond</Authors>
+    <Company>bitdozer</Company>
+    <Copyright>Copyright 2019</Copyright>
+    <PackageProjectUrl>https://github.com/bitdozer/Bitdozer.Lib.Core</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/bitdozer/Bitdozer.Lib.Core</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseUrl>https://choosealicense.com/licenses/agpl-3.0/</PackageLicenseUrl>
+    <Description>String extensions and other useful methods</Description>
   </PropertyGroup>
 
 </Project>
