@@ -11,8 +11,10 @@
     <RepositoryType>git</RepositoryType>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <Description>String extensions and other useful methods</Description>
+    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
     </PropertyGroup>
     <ItemGroup>
-        <None Include="..\LICENSE.txt" Pack="true" PackagePath=""/>
+        <None Include="..\LICENSE.txt" Pack="true" PackagePath="" />
     </ItemGroup>
 </Project>

@@ -39,5 +39,8 @@ namespace Bitdozer.Lib.Core.Tests
             Assert.AreEqual<string>("google.com?test=test&test2=test2", s);
         }
 
+
+
+
     }
 }
