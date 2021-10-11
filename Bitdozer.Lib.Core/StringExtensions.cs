@@ -84,11 +84,11 @@ namespace Bitdozer.Lib.Core
         }
 
         /// <summary>
-        /// Returns the string left of the first occurence of search.  If search is not found, empty string is returned.
+        /// Returns the string left of the first occurrence of search.  If search is not found, empty string is returned.
         /// </summary>
         /// <param name="s"></param>
         /// <param name="search">The string to search for</param>
-        /// <param name="comparison">The comparision type to perform.  Default: Ordinal</param>
+        /// <param name="comparison">The comparison type to perform.  Default: Ordinal</param>
         /// <returns></returns>
         public static string LeftOf(this string s, string search, StringComparison comparison = StringComparison.Ordinal)
         {
@@ -103,12 +103,12 @@ namespace Bitdozer.Lib.Core
         }
 
         /// <summary>
-        /// Returns the string left of the first occurence of search with explicit control over not found handling
+        /// Returns the string left of the first occurrence of search with explicit control over not found handling
         /// </summary>
         /// <param name="s"></param>
         /// <param name="search"></param>
         /// <param name="returnWholeStringIfNotFound"></param>
-        /// <param name="comparison">The comparision type to perform.  Default: Ordinal</param>
+        /// <param name="comparison">The comparison type to perform.  Default: Ordinal</param>
         /// <returns></returns>
         public static string LeftOf(this string s, string search, bool returnWholeStringIfNotFound, StringComparison comparison = StringComparison.Ordinal)
         {
@@ -122,12 +122,12 @@ namespace Bitdozer.Lib.Core
                 return s.Substring(0, (s + search).IndexOf(search, comparison));
         }
         /// <summary>
-        /// Returns the string left of the last occurence of search with explicit control over not found handling
+        /// Returns the string left of the last occurrence of search with explicit control over not found handling
         /// </summary>
         /// <param name="s"></param>
         /// <param name="search"></param>
         /// <param name="returnWholeStringIfNotFound"></param>
-        /// <param name="comparison">The comparision type to perform.  Default: Ordinal</param>
+        /// <param name="comparison">The comparison type to perform.  Default: Ordinal</param>
         /// <returns></returns>
         public static string LeftOfLast(this string s, string search, bool returnWholeStringIfNotFound = false, StringComparison comparison = StringComparison.Ordinal)
         {
@@ -138,12 +138,12 @@ namespace Bitdozer.Lib.Core
             return s.Substring(0, s.LastIndexOf(search, comparison));
         }
         /// <summary>
-        /// Returns the string right of the last occurence of search with explicit control over not found handling
+        /// Returns the string right of the last occurrence of search with explicit control over not found handling
         /// </summary>
         /// <param name="s"></param>
         /// <param name="search"></param>
         /// <param name="returnWholeStringIfNotFound"></param>
-        /// <param name="comparison">The comparision type to perform.  Default: Ordinal</param>
+        /// <param name="comparison">The comparison type to perform.  Default: Ordinal</param>
         /// <returns></returns>
         public static string RightOf(this string s, string search, bool returnWholeStringIfNotFound, StringComparison comparison = StringComparison.Ordinal)
         {
@@ -160,7 +160,7 @@ namespace Bitdozer.Lib.Core
             }
         }
         /// <summary>
-        /// Returns the string right of the last occurence of search
+        /// Returns the string right of the last occurrence of search
         /// </summary>
         /// <param name="s"></param>
         /// <param name="search"></param>
@@ -178,11 +178,11 @@ namespace Bitdozer.Lib.Core
                 return s.Substring(s.LastIndexOf(search, comparison) + search.Length);
         }
         /// <summary>
-        /// Returns the string right of the first occurence of search with explicit control over not found handling
+        /// Returns the string right of the first occurrence of search with explicit control over not found handling
         /// </summary>
         /// <param name="s"></param>
         /// <param name="search"></param>
-        /// <param name="comparison">The comparision type to perform.  Default: Ordinal</param>
+        /// <param name="comparison">The comparison type to perform.  Default: Ordinal</param>
         /// <returns></returns>
         public static string RightOfFirst(this string s, string search, StringComparison comparison = StringComparison.Ordinal)
         {
@@ -221,7 +221,7 @@ namespace Bitdozer.Lib.Core
             }
         }
         /// <summary>
-        /// Returns the string left of the first occurence of a char with explicit control over not found handling
+        /// Returns the string left of the first occurrence of a char with explicit control over not found handling
         /// </summary>
         /// <param name="s"></param>
         /// <param name="c">Character to search for</param>
@@ -235,7 +235,7 @@ namespace Bitdozer.Lib.Core
             return LeftOf(s, c.ToString(), returnWholeStringIfNotFound, comparison);
         }
         /// <summary>
-        /// Returns the string right of the last occurence of a char with explicit control over not found handling
+        /// Returns the string right of the last occurrence of a char with explicit control over not found handling
         /// </summary>
         /// <param name="s"></param>
         /// <param name="c">Character to search for</param>
@@ -312,7 +312,7 @@ namespace Bitdozer.Lib.Core
             return (string.IsNullOrEmpty(s) || (treatWhiteSpaceAsBlank && s.Trim().Length == 0));
         }
         /// <summary>
-        /// Inline version of string.IsNullOrEmpty
+        /// In-line version of string.IsNullOrEmpty
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
@@ -399,7 +399,7 @@ namespace Bitdozer.Lib.Core
             return sb.ToString();
         }
         /// <summary>
-        /// Returns a case-sensitive cound of occurences of findChar in the string
+        /// Returns a case-sensitive count of occurrences of findChar in the string
         /// </summary>
         /// <param name="s"></param>
         /// <param name="findChar"></param>
@@ -414,7 +414,7 @@ namespace Bitdozer.Lib.Core
             return count;
         }
         /// <summary>
-        /// Capitalizes the first character of a string and lowe cases the rest.
+        /// Capitalizes the first character of a string and lower cases the rest.
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
@@ -439,7 +439,6 @@ namespace Bitdozer.Lib.Core
         /// <returns></returns>
         public static string[] SplitKeepSplitters(this string s, params char[] splitters)
         {
-            //string[] outarray = null;
             if (string.IsNullOrEmpty(s) || splitters == null || splitters.Length == 0)
                 return new[] { s };
 
@@ -523,7 +522,7 @@ namespace Bitdozer.Lib.Core
         /// Attempts to convert a string to title case leaving common connector words as lower case
         /// </summary>
         /// <param name="s"></param>
-        /// <param name="forceLowerCase">If false only alters case on first letter, if true forcess rest of word to lower case</param>
+        /// <param name="forceLowerCase">If false only alters case on first letter, if true forces rest of word to lower case</param>
         /// <returns></returns>
         public static string ToTitle(this string s, bool forceLowerCase = true)
         {
